@@ -1,0 +1,12 @@
+
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 2012
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Backtest", "Backtest\Backtest.csproj", "{A791F72E-E5A9-49D3-BE23-F917516F52F1}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MyStrategy", "MyStrategy\MyStrategy.csproj", "{F083DE24-D66D-4B9E-A456-C67E949FAF76}"
+EndProject
+Global
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal
