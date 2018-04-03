@@ -44,7 +44,7 @@ namespace OpenQuant
 			ExecutionSimulator.CommissionProvider.Commission = 1;
 			
 			DataSimulator.DateTime1 = new DateTime(2017, 01, 10,09,00,00);
-			DataSimulator.DateTime2 = new DateTime(2017, 01, 10,09,27,00);
+			DataSimulator.DateTime2 = new DateTime(2017, 01, 11,09,27,00);
 			
 			
 			BarFactory.Clear();
@@ -56,5 +56,6 @@ namespace OpenQuant
         }
     }
 }
+
 
 
