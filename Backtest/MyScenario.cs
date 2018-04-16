@@ -43,19 +43,21 @@ namespace OpenQuant
 			ExecutionSimulator.CommissionProvider.Type = CommissionType.PerShare;
 			ExecutionSimulator.CommissionProvider.Commission = 1;
 			
-			DataSimulator.DateTime1 = new DateTime(2017, 01, 10,09,00,00);
-			DataSimulator.DateTime2 = new DateTime(2017, 01, 11,09,27,00);
+			DataSimulator.DateTime1 = new DateTime(2016, 05, 01,09,00,00);
+			DataSimulator.DateTime2 = new DateTime(2017, 03, 11,09,27,00);
 			
 			
 			BarFactory.Clear();
 			BarFactory.Add(instrument1, BarType.Time, 60);//1 min
-			//BarFactory.Add(instrument1, BarType.Time, 300);//3 min
+			//BarFactory.Add(instrument1, BarType.Time, 300);//5 min
 			//Initialize();
 			
             StartStrategy();
         }
     }
 }
+
+
 
 
 

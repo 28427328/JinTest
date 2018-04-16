@@ -85,10 +85,17 @@ namespace OpenQuant
 
 						HH = barHigh;
 						HL = barLow;
+						
+						LLDateTime = bar.DateTime;
+						HHDateTime = bar.DateTime;
+						HHLastPeriodCnt = 0;
+						LLLastPeriodCnt = 0;
+						
 						//Direction = 0;	
 						//Console.WriteLine("OnBar enter12");
 						//ReversePoint.Add(bar.DateTime, bar.Open);
-						Log(bar.Open, HLGroup, bar.DateTime);
+						//Log(bar.Open, HLGroup, bar.DateTime);
+						//Console.WriteLine("OnBar ReversePoint DateTime={0:yyyyMMdd HH:mm:ss.fff}, LL = {1}",bar.DateTime,bar.Open);
 						//Log(bar.DateTime,bar.Open, HLGroup);
 						//Log("start", HLGroup,bar.DateTime);
 						//Console.WriteLine("OnBar First Done ");
@@ -132,33 +139,38 @@ namespace OpenQuant
 									firstCal = false;
 									//ReversePoint.Add(HHDateTime, HH);
 									Log(HH, HLGroup,HHDateTime);
+									Console.WriteLine("OnBar ReversePoint DateTime={0:yyyyMMdd HH:mm:ss.fff}, HH = {1}",HHDateTime,HH);
 									HHLastPeriodCnt = 0;
 									Console.WriteLine("OnBar First Done ");
 								}
 							}
 						}
-						//Console.WriteLine("OnBar First112 start end ");
 					}				
 					else if(barClose>barOpen)
 					{
-						//Console.WriteLine("OnBar 123112 start ");
-						//Console.WriteLine("OnBar First22 Done ");
 						if(LLLastPeriodCnt>=3)
 						{
+							if(barLow < LL)
+							{
+								LL = barLow;
+								LLDateTime = bar.DateTime;
+							}
 							if(barHigh>LH)
 							{
-								HH = barHigh;
-								HL = barLow;
-								HHDateTime = bar.DateTime;
+								LH = barHigh;
 								HHLastPeriodCnt++;
+								//Console.WriteLine("OnBar > LH  DateTime={0:yyyyMMdd HH:mm:ss.fff}, HHLastPeriodCnt = {1}, LH = {2}",bar.DateTime,HHLastPeriodCnt,LH);
 								if(HHLastPeriodCnt>=3)
 								{
+									HHDateTime = bar.DateTime;
+									HH = barHigh;
+									HL = barLow;
 									//Console.WriteLine("OnBar test raise up HHLastPeriodCnt >3 {0} LLLastPeriodCnt{1}", HHLastPeriodCnt, LLLastPeriodCnt);
 									
 									//Console.WriteLine("OnBar test raise up mark ll point");
 									//ReversePoint.Add(LLDateTime, LL); 
 									Log(LL, HLGroup,LLDateTime);
-									Console.WriteLine("OnBar LL DateTime={0:yyyyMMdd HH:mm:ss.fff}, LL = {1}",LLDateTime,LL);
+									//Console.WriteLine("OnBar LL DateTime={0:yyyyMMdd HH:mm:ss.fff}, LL = {1}",LLDateTime,LL);
 									LLLastPeriodCnt = 0;
 									
 								}
@@ -186,6 +198,7 @@ namespace OpenQuant
 									//ReversePoint.Add(LLDateTime, LL); 
 									Log(LL, HLGroup,LLDateTime);
 									
+									
 									LLLastPeriodCnt = 0;
 								}
 							}
@@ -198,15 +211,22 @@ namespace OpenQuant
 						//Console.WriteLine("OnBar 111123112 start ");
 						if(HHLastPeriodCnt>=3)
 						{
-							
+							if(barHigh > HH)
+							{
+								HH = barHigh;
+								HHDateTime = bar.DateTime;
+							}
 							if(barLow<HL)
 							{
-								LL = barLow;
-								LH = barHigh;
-								LLDateTime = bar.DateTime;
+								HL = barLow;
 								LLLastPeriodCnt++;
+								
+								
 								if(LLLastPeriodCnt >=3)
 								{
+									LL = barLow;
+									LH = barHigh;
+									LLDateTime = bar.DateTime;
 									//Console.WriteLine("OnBar test fall down LLLastPeriodCnt >3 {0} HHLastPeriodCnt{1}", LLLastPeriodCnt, HHLastPeriodCnt);
 									if(HHLastPeriodCnt < 3)
 									{
@@ -218,6 +238,7 @@ namespace OpenQuant
 										//Console.WriteLine("OnBar test Fall down  mark HH point last time {0}", HHLastPeriodCnt);
 										//ReversePoint.Add(HHDateTime, HH);
 										Log( HH, HLGroup,HHDateTime);
+										//Console.WriteLine("OnBar HH DateTime={0:yyyyMMdd HH:mm:ss.fff}, HH = {1}",HHDateTime,HH);
 										
 										HHLastPeriodCnt = 0;
 									}
@@ -249,15 +270,35 @@ namespace OpenQuant
 								}
 							}
 						}
-						//Console.WriteLine("OnBar 111123112 start end");
+							
+						//Console.WriteLine("OnBar end");
+					}
+					else  if(barClose == barOpen)
+					{
+						if(HHLastPeriodCnt>=3)
+						{
+							if(barHigh > HH)
+							{
+								HH = barHigh;
+								HHDateTime = bar.DateTime;
+							}	
+						}
+						if(LLLastPeriodCnt>=3)
+						{
+							if(barLow < LL)
+							{
+								LL = barLow;
+								LLDateTime = bar.DateTime;
+							}	
+						}
 					}
 					
 					
-				}
-			}
+				}//end (bar.Close > 0) 
+			}//end if (bar.Size == 60)
 			
 
-		}
+		}//end onBar
 		
 		private void AddGroups()
 		{
@@ -288,7 +329,7 @@ namespace OpenQuant
 			HLGroup = new Group("HL");
 			HLGroup.Add("Pad", 1);
 			HLGroup.Add("SelectorKey", Instrument.Symbol);
-			HLGroup.Add("Style", "Circle");
+			HLGroup.Add("Style", "Line");
 			HLGroup.Add("Color", Color.Black);
 			HLGroup.Add("Width", 4);
 
@@ -358,6 +399,8 @@ namespace OpenQuant
 		}
 	}
 }
+
+
 
 
 
